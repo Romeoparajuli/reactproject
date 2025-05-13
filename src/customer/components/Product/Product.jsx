@@ -7,7 +7,7 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { mens_kurta } from '../../../Data/Men/men_kurta'
 import { filters, singleFilter, sortBy } from './FilterData'
 import ProductCard from './ProductCard'
-import { Dialog, DialogBackdrop, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { Dialog, DialogBackdrop, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
