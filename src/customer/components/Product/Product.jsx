@@ -210,177 +210,153 @@ export default function Product() {
 
                     <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                         {/* Filters - Takes exactly the space it needs */}
-                        <div className="hidden lg:block lg:col-span-1 lg:pr-4">
-                            <form>
-                                <h3 className="sr-only">Categories</h3>
+                        <>
 
-                                {filters.map((section) => (
-                                    <Disclosure
-                                        key={section.id}
-                                        as="div"
-                                        className="border-b border-gray-200 py-6 px-4"
-                                    >
-                                        <h3 className="-my-3 flow-root">
-                                            <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                <span className="font-medium text-gray-900">
-                                                    {section.name}
-                                                </span>
-                                                <span className="ml-6 flex items-center">
-                                                    <PlusIcon
-                                                        aria-hidden="true"
-                                                        className="h-5 w-5 group-data-open:hidden"
-                                                    />
-                                                    <MinusIcon
-                                                        aria-hidden="true"
-                                                        className="h-5 w-5 group-not-data-open:hidden"
-                                                    />
-                                                </span>
-                                            </DisclosureButton>
-                                        </h3>
-                                        <DisclosurePanel className="pt-6">
-                                            <div className="space-y-4">
-                                                {section.options.map((option, optionIdx) => (
-                                                    <div key={option.value} className="flex gap-3">
-                                                        <div className="flex h-5 shrink-0 items-center">
-                                                            <div className="group grid h-4 w-4 grid-cols-1">
-                                                                <input
-                                                                    defaultValue={option.value}
-                                                                    defaultChecked={option.checked}
-                                                                    id={`filter-${section.id}-${optionIdx}`}
-                                                                    name={`${section.id}[]`}
-                                                                    type="checkbox"
-                                                                    className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                                                />
-                                                                <svg
-                                                                    fill="none"
-                                                                    viewBox="0 0 14 14"
-                                                                    className="pointer-events-none col-start-1 row-start-1 h-3.5 w-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                                                >
-                                                                    <path
-                                                                        d="M3 8L6 11L11 3.5"
-                                                                        strokeWidth={2}
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        className="opacity-0 group-has-checked:opacity-100"
-                                                                    />
-                                                                    <path
-                                                                        d="M3 7H11"
-                                                                        strokeWidth={2}
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        className="opacity-0 group-has-indeterminate:opacity-100"
-                                                                    />
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        <label
-                                                            htmlFor={`filter-${section.id}-${optionIdx}`}
-                                                            className="text-sm text-gray-600"
-                                                        >
-                                                            {option.label}
-                                                        </label>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </DisclosurePanel>
-                                    </Disclosure>
-                                ))}
-                                {singleFilter.map((section) => (
-                                    <Disclosure
-                                        key={section.id}
-                                        as="div"
-                                        className="border-b border-gray-200 py-6 px-4"
-                                    >
+                            <div className="hidden lg:block lg:col-span-1 lg:pr-4">
+                                <h1 className="text-lg opacity-50 font-bold text-center w-full">Filters</h1>
+                                <form>
+                                    <h3 className="sr-only">Categories</h3>
 
-                                        <h3 className="-my-3 flow-root">
-                                            <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                {/* <span className="font-medium text-gray-900"></span> */}
-                                                <FormLabel
-                                                    className="font-medium text-gray-900"
-                                                    id="demo-controlled-radio-buttons-group"
-                                                >
-                                                    {section.name}
-                                                </FormLabel>
-
-                                                <span className="ml-6 flex items-center">
-                                                    <PlusIcon
-                                                        aria-hidden="true"
-                                                        className="h-5 w-5 group-data-open:hidden"
-                                                    />
-                                                    <MinusIcon
-                                                        aria-hidden="true"
-                                                        className="h-5 w-5 group-not-data-open:hidden"
-                                                    />
-                                                </span>
-                                            </DisclosureButton>
-                                        </h3>
-                                        <DisclosurePanel className="pt-6">
-                                            <div className="space-y-4">
-                                                <FormControl>
-                                                    <RadioGroup
-                                                        aria-labelledby="demo-controlled-radio-buttons-group"
-                                                        name="controlled-radio-buttons-group"
-                                                    >
-                                                        {section.options.map((option, optionIdx) => (
-                                                            <div key={option.value} className="flex gap-3">
-                                                                <div className="flex h-5 shrink-0 items-center">
-                                                                    {/* <div className="group grid h-4 w-4 grid-cols-1">
-                                                                <input
-                                                                    defaultValue={option.value}
-                                                                    defaultChecked={option.checked}
-                                                                    id={`filter-${section.id}-${optionIdx}`}
-                                                                    name={`${section.id}[]`}
-                                                                    type="checkbox"
-                                                                    className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                                                />
-                                                                <svg
-                                                                    fill="none"
-                                                                    viewBox="0 0 14 14"
-                                                                    className="pointer-events-none col-start-1 row-start-1 h-3.5 w-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                                                >
-                                                                    <path
-                                                                        d="M3 8L6 11L11 3.5"
-                                                                        strokeWidth={2}
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        className="opacity-0 group-has-checked:opacity-100"
+                                    {filters.map((section) => (
+                                        <Disclosure
+                                            key={section.id}
+                                            as="div"
+                                            className="border-b border-gray-200 py-6 px-4 mb-4"
+                                        >
+                                            <h3 className="-my-3 flow-root">
+                                                <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                                                    <span className="font-medium text-gray-900">
+                                                        {section.name}
+                                                    </span>
+                                                    <span className="ml-6 flex items-center">
+                                                        <PlusIcon
+                                                            aria-hidden="true"
+                                                            className="h-5 w-5 group-data-open:hidden"
+                                                        />
+                                                        <MinusIcon
+                                                            aria-hidden="true"
+                                                            className="h-5 w-5 group-not-data-open:hidden"
+                                                        />
+                                                    </span>
+                                                </DisclosureButton>
+                                            </h3>
+                                            <DisclosurePanel className="pt-6">
+                                                <div className="space-y-4">
+                                                    {section.options.map((option, optionIdx) => (
+                                                        <div key={option.value} className="flex gap-3">
+                                                            <div className="flex h-5 shrink-0 items-center">
+                                                                <div className="group grid h-4 w-4 grid-cols-1">
+                                                                    <input
+                                                                        defaultValue={option.value}
+                                                                        defaultChecked={option.checked}
+                                                                        id={`filter-${section.id}-${optionIdx}`}
+                                                                        name={`${section.id}[]`}
+                                                                        type="checkbox"
+                                                                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                                                     />
-                                                                    <path
-                                                                        d="M3 7H11"
-                                                                        strokeWidth={2}
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        className="opacity-0 group-has-indeterminate:opacity-100"
-                                                                    />
-                                                                </svg>
-                                                            </div> */}
-
-                                                                    <>
-                                                                        <FormControlLabel
-                                                                            value={option.id}
-                                                                            control={<Radio />}
-                                                                            label={option.lable}
+                                                                    <svg
+                                                                        fill="none"
+                                                                        viewBox="0 0 14 14"
+                                                                        className="pointer-events-none col-start-1 row-start-1 h-3.5 w-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
+                                                                    >
+                                                                        <path
+                                                                            d="M3 8L6 11L11 3.5"
+                                                                            strokeWidth={2}
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            className="opacity-0 group-has-checked:opacity-100"
                                                                         />
-
-                                                                    </>
+                                                                        <path
+                                                                            d="M3 7H11"
+                                                                            strokeWidth={2}
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            className="opacity-0 group-has-indeterminate:opacity-100"
+                                                                        />
+                                                                    </svg>
                                                                 </div>
-                                                                <label
-                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                                                    className="text-sm text-gray-600"
-                                                                >
-                                                                    {option.label}
-                                                                </label>
                                                             </div>
-                                                        ))}
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </div>
-                                        </DisclosurePanel>
+                                                            <label
+                                                                htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                className="text-sm text-gray-600"
+                                                            >
+                                                                {option.label}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </DisclosurePanel>
+                                        </Disclosure>
+                                    ))}
+                                    {singleFilter.map((section) => (
+                                        <Disclosure
+                                            key={section.id}
+                                            as="div"
+                                            className="border-b border-gray-200 py-6 px-4"
+                                        >
 
-                                    </Disclosure>
-                                ))}
-                            </form>
-                        </div>
+                                            <h3 className="-my-3 flow-root">
+                                                <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                                                    <FormLabel
+                                                        sx={{ color: "black" }}
+                                                        className="font-medium text-gray-900"
+                                                        id="demo-controlled-radio-buttons-group"
+                                                    >
+                                                        {section.name}
+                                                    </FormLabel>
+
+                                                    <span className="ml-6 flex items-center">
+                                                        <PlusIcon
+                                                            aria-hidden="true"
+                                                            className="h-5 w-5 group-data-open:hidden"
+                                                        />
+                                                        <MinusIcon
+                                                            aria-hidden="true"
+                                                            className="h-5 w-5 group-not-data-open:hidden"
+                                                        />
+                                                    </span>
+                                                </DisclosureButton>
+                                            </h3>
+                                            <DisclosurePanel className="pt-6">
+                                                <div className="space-y-4">
+                                                    <FormControl>
+                                                        <RadioGroup
+                                                            aria-labelledby="demo-controlled-radio-buttons-group"
+                                                            name="controlled-radio-buttons-group"
+                                                            className="space-y-2"
+                                                        >
+                                                            {section.options.map((option, optionIdx) => (
+                                                                <div key={option.value} className="flex items-center gap-3">
+                                                                    <FormControlLabel
+                                                                        value={option.value}
+                                                                        control={
+                                                                            <Radio
+                                                                                sx={{
+                                                                                    color: "#4F46E5",
+                                                                                    "&.Mui-checked": {
+                                                                                        color: "#6366F1",
+                                                                                    },
+                                                                                }}
+                                                                            />
+                                                                        }
+                                                                        label={
+                                                                            <span className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition duration-200">
+                                                                                {option.label}
+                                                                            </span>
+                                                                        }
+                                                                        className="flex-1"
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                        </RadioGroup>
+                                                    </FormControl>
+                                                </div>
+                                            </DisclosurePanel>
+
+                                        </Disclosure>
+                                    ))}
+                                </form>
+                            </div></>
 
                         {/* Product grid - Takes remaining space */}
                         <div className="lg:col-span-4 px-4 sm:px-6 lg:px-0">
