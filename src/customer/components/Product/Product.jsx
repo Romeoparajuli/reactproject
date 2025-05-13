@@ -1,25 +1,47 @@
-import React from 'react';
-import "./ProductCard.css"
-import { useState } from 'react'
+import React from "react";
+import "./ProductCard.css";
+import { useState } from "react";
 
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import { mens_kurta } from '../../../Data/Men/men_kurta'
-import { filters, singleFilter, sortBy } from './FilterData'
-import ProductCard from './ProductCard'
-import { Dialog, DialogBackdrop, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+    ChevronDownIcon,
+    FunnelIcon,
+    MinusIcon,
+    PlusIcon,
+    Squares2X2Icon,
+} from "@heroicons/react/20/solid";
+import { mens_kurta } from "../../../Data/Men/men_kurta";
+import { filters, singleFilter, sortBy } from "./FilterData";
+import ProductCard from "./ProductCard";
+import {
+    Dialog,
+    DialogBackdrop,
+    DialogPanel,
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Menu,
+    MenuButton,
+    MenuItems,
+    MenuItem,
+} from "@headlessui/react";
+import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
 function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(" ");
 }
 
 export default function Product() {
-    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
     return (
         <div className="bg-white min-h-screen">
             {/* Mobile filter dialog */}
-            <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">
+            <Dialog
+                open={mobileFiltersOpen}
+                onClose={setMobileFiltersOpen}
+                className="relative z-40 lg:hidden"
+            >
                 <DialogBackdrop
                     transition
                     className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
@@ -47,13 +69,25 @@ export default function Product() {
                             <h3 className="sr-only">Categories</h3>
 
                             {filters.map((section) => (
-                                <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
+                                <Disclosure
+                                    key={section.id}
+                                    as="div"
+                                    className="border-t border-gray-200 px-4 py-6"
+                                >
                                     <h3 className="-mx-2 -my-3 flow-root">
                                         <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                            <span className="font-medium text-gray-900">{section.name}</span>
+                                            <span className="font-medium text-gray-900">
+                                                {section.name}
+                                            </span>
                                             <span className="ml-6 flex items-center">
-                                                <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-open:hidden" />
-                                                <MinusIcon aria-hidden="true" className="h-5 w-5 group-not-data-open:hidden" />
+                                                <PlusIcon
+                                                    aria-hidden="true"
+                                                    className="h-5 w-5 group-data-open:hidden"
+                                                />
+                                                <MinusIcon
+                                                    aria-hidden="true"
+                                                    className="h-5 w-5 group-not-data-open:hidden"
+                                                />
                                             </span>
                                         </DisclosureButton>
                                     </h3>
@@ -111,7 +145,9 @@ export default function Product() {
 
             <div className="mx-auto w-full">
                 <div className="flex items-baseline justify-between border-b border-gray-200 px-4 pt-24 pb-6 sm:px-6 lg:px-8">
-                    <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
+                    <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                        New Arrivals
+                    </h1>
 
                     <div className="flex items-center">
                         <Menu as="div" className="relative inline-block text-left">
@@ -135,8 +171,10 @@ export default function Product() {
                                             <a
                                                 href={option.href}
                                                 className={classNames(
-                                                    option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                                                    'block px-4 py-2 text-sm data-focus:bg-gray-100 data-focus:outline-hidden',
+                                                    option.current
+                                                        ? "font-medium text-gray-900"
+                                                        : "text-gray-500",
+                                                    "block px-4 py-2 text-sm data-focus:bg-gray-100 data-focus:outline-hidden"
                                                 )}
                                             >
                                                 {option.name}
@@ -147,7 +185,10 @@ export default function Product() {
                             </MenuItems>
                         </Menu>
 
-                        <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+                        <button
+                            type="button"
+                            className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
+                        >
                             <span className="sr-only">View grid</span>
                             <Squares2X2Icon aria-hidden="true" className="h-5 w-5" />
                         </button>
@@ -174,13 +215,25 @@ export default function Product() {
                                 <h3 className="sr-only">Categories</h3>
 
                                 {filters.map((section) => (
-                                    <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6 px-4">
+                                    <Disclosure
+                                        key={section.id}
+                                        as="div"
+                                        className="border-b border-gray-200 py-6 px-4"
+                                    >
                                         <h3 className="-my-3 flow-root">
                                             <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                <span className="font-medium text-gray-900">{section.name}</span>
+                                                <span className="font-medium text-gray-900">
+                                                    {section.name}
+                                                </span>
                                                 <span className="ml-6 flex items-center">
-                                                    <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-open:hidden" />
-                                                    <MinusIcon aria-hidden="true" className="h-5 w-5 group-not-data-open:hidden" />
+                                                    <PlusIcon
+                                                        aria-hidden="true"
+                                                        className="h-5 w-5 group-data-open:hidden"
+                                                    />
+                                                    <MinusIcon
+                                                        aria-hidden="true"
+                                                        className="h-5 w-5 group-not-data-open:hidden"
+                                                    />
                                                 </span>
                                             </DisclosureButton>
                                         </h3>
@@ -220,7 +273,10 @@ export default function Product() {
                                                                 </svg>
                                                             </div>
                                                         </div>
-                                                        <label htmlFor={`filter-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
+                                                        <label
+                                                            htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                            className="text-sm text-gray-600"
+                                                        >
                                                             {option.label}
                                                         </label>
                                                     </div>
@@ -230,22 +286,45 @@ export default function Product() {
                                     </Disclosure>
                                 ))}
                                 {singleFilter.map((section) => (
-                                    <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6 px-4">
+                                    <Disclosure
+                                        key={section.id}
+                                        as="div"
+                                        className="border-b border-gray-200 py-6 px-4"
+                                    >
+
                                         <h3 className="-my-3 flow-root">
                                             <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                <span className="font-medium text-gray-900">{section.name}</span>
+                                                {/* <span className="font-medium text-gray-900"></span> */}
+                                                <FormLabel
+                                                    className="font-medium text-gray-900"
+                                                    id="demo-controlled-radio-buttons-group"
+                                                >
+                                                    {section.name}
+                                                </FormLabel>
+
                                                 <span className="ml-6 flex items-center">
-                                                    <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-open:hidden" />
-                                                    <MinusIcon aria-hidden="true" className="h-5 w-5 group-not-data-open:hidden" />
+                                                    <PlusIcon
+                                                        aria-hidden="true"
+                                                        className="h-5 w-5 group-data-open:hidden"
+                                                    />
+                                                    <MinusIcon
+                                                        aria-hidden="true"
+                                                        className="h-5 w-5 group-not-data-open:hidden"
+                                                    />
                                                 </span>
                                             </DisclosureButton>
                                         </h3>
                                         <DisclosurePanel className="pt-6">
                                             <div className="space-y-4">
-                                                {section.options.map((option, optionIdx) => (
-                                                    <div key={option.value} className="flex gap-3">
-                                                        <div className="flex h-5 shrink-0 items-center">
-                                                            <div className="group grid h-4 w-4 grid-cols-1">
+                                                <FormControl>
+                                                    <RadioGroup
+                                                        aria-labelledby="demo-controlled-radio-buttons-group"
+                                                        name="controlled-radio-buttons-group"
+                                                    >
+                                                        {section.options.map((option, optionIdx) => (
+                                                            <div key={option.value} className="flex gap-3">
+                                                                <div className="flex h-5 shrink-0 items-center">
+                                                                    {/* <div className="group grid h-4 w-4 grid-cols-1">
                                                                 <input
                                                                     defaultValue={option.value}
                                                                     defaultChecked={option.checked}
@@ -274,15 +353,30 @@ export default function Product() {
                                                                         className="opacity-0 group-has-indeterminate:opacity-100"
                                                                     />
                                                                 </svg>
+                                                            </div> */}
+
+                                                                    <>
+                                                                        <FormControlLabel
+                                                                            value={option.id}
+                                                                            control={<Radio />}
+                                                                            label={option.lable}
+                                                                        />
+
+                                                                    </>
+                                                                </div>
+                                                                <label
+                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                    className="text-sm text-gray-600"
+                                                                >
+                                                                    {option.label}
+                                                                </label>
                                                             </div>
-                                                        </div>
-                                                        <label htmlFor={`filter-${section.id}-${optionIdx}`} className="text-sm text-gray-600">
-                                                            {option.label}
-                                                        </label>
-                                                    </div>
-                                                ))}
+                                                        ))}
+                                                    </RadioGroup>
+                                                </FormControl>
                                             </div>
                                         </DisclosurePanel>
+
                                     </Disclosure>
                                 ))}
                             </form>
@@ -292,10 +386,7 @@ export default function Product() {
                         <div className="lg:col-span-4 px-4 sm:px-6 lg:px-0">
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                 {mens_kurta.map((item, index) => (
-                                    <ProductCard
-                                        key={item.id || index}
-                                        product={item}
-                                    />
+                                    <ProductCard key={item.id || index} product={item} />
                                 ))}
                             </div>
                         </div>
@@ -303,5 +394,5 @@ export default function Product() {
                 </section>
             </div>
         </div>
-    )
+    );
 }
