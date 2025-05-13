@@ -325,7 +325,7 @@ export default function Product() {
                                                             name="controlled-radio-buttons-group"
                                                             className="space-y-2"
                                                         >
-                                                            {section.options.map((option, optionIdx) => (
+                                                            {section.options.map((option) => (
                                                                 <div key={option.value} className="flex items-center gap-3">
                                                                     <FormControlLabel
                                                                         value={option.value}
