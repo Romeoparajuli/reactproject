@@ -1,0 +1,105 @@
+/* General styling for the product card */
+.productCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem;
+    margin: 0.75rem; /* Reduced margin to decrease the gap between cards */
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 6px, rgba(0, 0, 0, 0.1) 0px 1px 3px;
+}
+
+.productCard:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 8px 16px, rgba(0, 0, 0, 0.05) 0px 4px 8px;
+}
+
+/* Styling for the image */
+.productCard img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px;
+}
+
+.productCard:hover img {
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+}
+
+/* Styling for the text part */
+.productCard .textPart {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 1rem;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px;
+}
+
+.productCard .textPart p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #333333;
+}
+
+.productCard .textPart .font-bold {
+    font-size: 1rem;
+    color: #4f46e5;
+}
+
+.productCard .textPart .font-semibold {
+    font-size: 1.1rem;
+    color: #111827;
+}
+
+.productCard .textPart .line-through {
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+/* Discounted price styling */
+.productCard .textPart .text-green-600 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #16a34a;
+}
+
+/* Add hover effect for buttons or links inside the card */
+.productCard a,
+.productCard button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #4f46e5;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.productCard a:hover,
+.productCard button:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .productCard {
+        margin: 1rem;
+    }
+
+    .productCard .textPart {
+        padding: 0.75rem;
+    }
+}
