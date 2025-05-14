@@ -25,7 +25,7 @@ import {
     MenuItems,
     MenuItem,
 } from "@headlessui/react";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { useLocation, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -33,6 +33,61 @@ function classNames(...classes) {
 
 export default function Product() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const handleFilter = (value, sectionId) => {
+        const searchParamms = new URLSearchParams(location.search)
+        let filterValue = searchParamms.getAll(sectionId)
+        if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+            filterValue = filterValue[0].split(",").filter((item) => item != value);
+            if (filterValue.length === 0) {
+                searchParamms.delete(sectionId)
+
+            }
+        } else {
+            filterValue.push(value)
+        }
+        if (filterValue.length > 0) {
+            searchParamms.set(sectionId, filterValue.join(","));
+
+
+        }
+        const query = searchParamms.toString();
+        navigate({ search: `?${query}` })
+    }
+
+    // const handleRadioFilterChange = (e, sectionId) => {
+    //     const searchParamms = new URLSearchParams(location.search)
+    //     searchParamms.set(sectionId, e.target.value)
+    //     const query = searchParamms.toString();
+    //     navigate({ search: `?${query}` })
+
+
+    // }
+    const handleSingleCheckboxFilterChange = (e, sectionId) => {
+        const searchParamms = new URLSearchParams(location.search);
+        let filterValue = searchParamms.getAll(sectionId);
+
+        const value = e.target.value;
+
+        // If the checkbox is checked, add the value; otherwise, remove it
+        if (e.target.checked) {
+            filterValue.push(value);
+        } else {
+            filterValue = filterValue.filter((item) => item !== value);
+        }
+
+        // Update the query params
+        if (filterValue.length > 0) {
+            searchParamms.set(sectionId, filterValue.join(","));
+        } else {
+            searchParamms.delete(sectionId);
+        }
+
+        const query = searchParamms.toString();
+        navigate({ search: `?${query}` });
+    };
 
     return (
         <div className="bg-white min-h-screen">
@@ -263,6 +318,7 @@ export default function Product() {
                                                             <div className="flex h-5 shrink-0 items-center">
                                                                 <div className="group grid h-4 w-4 grid-cols-1">
                                                                     <input
+                                                                        onChange={() => handleFilter(option.value, section.id)}
                                                                         defaultValue={option.value}
                                                                         defaultChecked={option.checked}
                                                                         id={`filter-${section.id}-${optionIdx}`}
@@ -310,17 +366,9 @@ export default function Product() {
                                             as="div"
                                             className="border-b border-gray-200 py-6 px-4"
                                         >
-
                                             <h3 className="-my-3 flow-root">
                                                 <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                    <FormLabel
-                                                        sx={{ color: "black" }}
-                                                        className="font-medium text-gray-900"
-                                                        id="demo-controlled-radio-buttons-group"
-                                                    >
-                                                        {section.name}
-                                                    </FormLabel>
-
+                                                    <span className="font-medium text-gray-900">{section.name}</span>
                                                     <span className="ml-6 flex items-center">
                                                         <PlusIcon
                                                             aria-hidden="true"
@@ -335,40 +383,30 @@ export default function Product() {
                                             </h3>
                                             <DisclosurePanel className="pt-6">
                                                 <div className="space-y-4">
-                                                    <FormControl>
-                                                        <RadioGroup
-                                                            aria-labelledby="demo-controlled-radio-buttons-group"
-                                                            name="controlled-radio-buttons-group"
-                                                            className="space-y-2"
-                                                        >
-                                                            {section.options.map((option) => (
-                                                                <div key={option.value} className="flex items-center gap-3">
-                                                                    <FormControlLabel
-                                                                        value={option.value}
-                                                                        control={
-                                                                            <Radio
-                                                                                sx={{
-                                                                                    color: "#4F46E5",
-                                                                                    "&.Mui-checked": {
-                                                                                        color: "#6366F1",
-                                                                                    },
-                                                                                }}
-                                                                            />
-                                                                        }
-                                                                        label={
-                                                                            <span className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition duration-200">
-                                                                                {option.label}
-                                                                            </span>
-                                                                        }
-                                                                        className="flex-1"
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </RadioGroup>
-                                                    </FormControl>
+                                                    {section.options.map((option) => (
+                                                        <div key={option.value} className="flex items-center gap-3">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`single-filter-${section.id}-${option.value}`}
+                                                                value={option.value}
+                                                                defaultChecked={location.search
+                                                                    .split("&")
+                                                                    .some((param) =>
+                                                                        param.includes(`${section.id}=${option.value}`)
+                                                                    )}
+                                                                onChange={(e) => handleSingleCheckboxFilterChange(e, section.id)}
+                                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <label
+                                                                htmlFor={`single-filter-${section.id}-${option.value}`}
+                                                                className="text-sm font-medium text-gray-700"
+                                                            >
+                                                                {option.label}
+                                                            </label>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </DisclosurePanel>
-
                                         </Disclosure>
                                     ))}
                                 </form>
@@ -376,7 +414,7 @@ export default function Product() {
 
                         {/* Product grid - Takes remaining space */}
                         <div className="lg:col-span-4 px-4 sm:px-6 lg:px-0">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
                                 {mens_kurta.map((item, index) => (
                                     <ProductCard key={item.id || index} product={item} />
                                 ))}
