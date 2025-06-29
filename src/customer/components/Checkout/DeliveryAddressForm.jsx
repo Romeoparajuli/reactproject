@@ -1,372 +1,451 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     Grid,
-    Card,
-    CardContent,
-    Typography,
-    Divider,
     TextField,
-    MenuItem,
     Button,
-    Box
-} from '@mui/material';
+    Paper,
+    Typography,
+    MenuItem,
+    Box,
+    Container
+} from "@mui/material";
 import AddressCard from '../AddressCard/AddressCard';
 
-const provincesOfNepal = [
-    "Province No. 1",
+const provinces = [
+    "Province 1",
     "Madhesh Province",
     "Bagmati Province",
     "Gandaki Province",
     "Lumbini Province",
     "Karnali Province",
-    "Sudurpashchim Province"
+    "Sudurpashchim Province",
 ];
 
-function DeliveryAddressForm() {
+const districts = {
+    "Province 1": ["Bhojpur", "Dhankuta", "Ilam", "Jhapa", "Khotang", "Morang", "Okhaldhunga", "Panchthar", "Sankhuwasabha", "Solukhumbu", "Sunsari", "Taplejung", "Terhathum", "Udayapur"],
+    "Madhesh Province": ["Bara", "Dhanusa", "Mahottari", "Parsa", "Rautahat", "Saptari", "Sarlahi", "Siraha"],
+    "Bagmati Province": ["Bhaktapur", "Chitwan", "Dhading", "Dolakha", "Kathmandu", "Kavrepalanchok", "Lalitpur", "Makwanpur", "Nuwakot", "Ramechhap", "Rasuwa", "Sindhuli", "Sindhupalchok"],
+    "Gandaki Province": ["Baglung", "Gorkha", "Kaski", "Lamjung", "Manang", "Mustang", "Myagdi", "Nawalpur", "Parbat", "Syangja", "Tanahu"],
+    "Lumbini Province": ["Arghakhanchi", "Banke", "Bardiya", "Dang", "Gulmi", "Kapilvastu", "Parasi", "Palpa", "Pyuthan", "Rolpa", "Rukum East", "Rupandehi"],
+    "Karnali Province": ["Dailekh", "Dolpa", "Humla", "Jajarkot", "Jumla", "Kalikot", "Mugu", "Rukum West", "Salyan", "Surkhet"],
+    "Sudurpashchim Province": ["Achham", "Baitadi", "Bajhang", "Bajura", "Dadeldhura", "Darchula", "Doti", "Kailali", "Kanchanpur"]
+};
+
+const DeliveryAddressForm = ({ onSubmit }) => {
     const [form, setForm] = useState({
-        firstName: '',
-        lastName: '',
-        address: '',
-        city: '',
-        province: '',
-        zip: '',
-        phone: ''
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+        province: "",
+        district: "",
+        municipality: "",
+        wardNo: "",
+        tole: "",
+        postalCode: "",
     });
-    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setErrors({ ...errors, [e.target.name]: '' });
-    };
+        const { name, value } = e.target;
 
-    const validate = () => {
-        let temp = {};
-        temp.firstName = form.firstName ? "" : "First name is required";
-        temp.lastName = form.lastName ? "" : "Last name is required";
-        temp.address = form.address ? "" : "Address is required";
-        temp.city = form.city ? "" : "City is required";
-        temp.province = form.province ? "" : "Province is required";
-        temp.zip = /^\d{5}$/.test(form.zip) ? "" : "Valid 5-digit Zip is required";
-        temp.phone = /^9\d{9}$/.test(form.phone) ? "" : "Valid 10-digit Nepali phone required";
-        setErrors(temp);
-        return Object.values(temp).every(x => x === "");
+        if (name === "province") {
+            setForm({
+                ...form,
+                province: value,
+                district: "" // Reset district when province changes
+            });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validate()) {
-            alert("Form submitted!");
-        }
+        if (onSubmit) onSubmit(form);
     };
 
+    // Get districts based on selected province
+    const currentDistricts = form.province ? districts[form.province] : [];
+
     return (
-        <Box sx={{ width: '100%', bgcolor: '#fff', py: { xs: 2, md: 4 }, fontFamily: 'Inter, Arial, sans-serif' }}>
-            <Grid
-                container
-                spacing={3}
-                alignItems="flex-start"
-                justifyContent="center"
+        <Container maxWidth="lg" sx={{
+            py: 6,
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center"
+        }}>
+            <Typography
+                variant="h4"
+                fontWeight={700}
+                gutterBottom
+                align="center"
                 sx={{
-                    maxWidth: 1200,
-                    mx: 'auto',
-                    px: { xs: 1, sm: 2, md: 2 }
+                    mb: 5,
+                    color: "primary.dark",
+                    letterSpacing: 1,
+                    textTransform: "uppercase"
                 }}
             >
-                {/* Address Card - left on desktop, top on mobile */}
-                <Grid item xs={12} md={5} lg={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: { xs: 'center', md: 'flex-start' },
-                        alignItems: 'stretch'
-                    }}
-                >
-                    <Card elevation={3} sx={{
-                        borderRadius: 3,
-                        width: '100%',
-                        minHeight: 350,
-                        maxWidth: 400,
-                        p: { xs: 2, sm: 3 },
-                        bgcolor: '#fafbfc',
-                        boxShadow: '0 2px 12px 0 rgba(80,80,80,0.07)'
-                    }}>
-                        <CardContent sx={{ p: 0 }}>
-                            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>
-                                Saved Address
-                            </Typography>
-                            <Typography variant="body2" sx={{ lineHeight: 1.6 }}>
-                                John Doe<br />
-                                123 Main St<br />
-                                Kathmandu, Bagmati Province<br />
-                                44600<br />
-                                9800000000
-                            </Typography>
-                        </CardContent>
-                        <Box sx={{ pt: 2 }}>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                fullWidth
-                                sx={{
-                                    fontWeight: 600,
-                                    fontSize: '1rem',
-                                    borderRadius: 2,
-                                    bgcolor: '#a000ff',
-                                    color: '#fff',
-                                    boxShadow: 2,
-                                    letterSpacing: 1,
-                                    mt: 1,
-                                    '&:hover': {
-                                        bgcolor: '#7a00cc',
-                                        boxShadow: 4,
-                                    }
-                                }}
-                            >
-                                DELIVER HERE
-                            </Button>
-                        </Box>
-                    </Card>
-                </Grid>
+                DELIVERY ADDRESS
+            </Typography>
 
-                {/* Form Card - right on desktop, bottom on mobile */}
-                <Grid item xs={12} md={7} lg={8}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: { xs: 'center', md: 'flex-end' },
-                        alignItems: 'stretch'
-                    }}
-                >
-                    <Card elevation={3} sx={{
-                        borderRadius: 3,
-                        width: '100%',
-                        maxWidth: 600,
-                        p: { xs: 1, sm: 2 },
-                        bgcolor: '#fafbfc',
-                        boxShadow: '0 2px 12px 0 rgba(80,80,80,0.07)'
-                    }}>
-                        <CardContent>
-                            <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
-                                Delivery Address
-                            </Typography>
-                            <Divider sx={{ mb: 3 }} />
-                            <form autoComplete="off" onSubmit={handleSubmit}>
-                                <Grid container spacing={2}>
-                                    {/* Row 1: First Name, Last Name */}
+            <Grid container spacing={4} alignItems="stretch">
+                {/* Form Column (60%) */}
+                <Grid item xs={12} md={7}>
+                    <Paper
+                        sx={{
+                            p: { xs: 3, sm: 4 },
+                            borderRadius: 2,
+                            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.06)",
+                            border: "1px solid #e0e0e0",
+                            height: "100%"
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            fontWeight={600}
+                            color="text.primary"
+                            gutterBottom
+                            sx={{
+                                mb: 4,
+                                pb: 2,
+                                borderBottom: "1px solid #f0f0f0"
+                            }}
+                        >
+                            Shipping Information
+                        </Typography>
+
+                        <form onSubmit={handleSubmit} autoComplete="off">
+                            <Grid container spacing={3}>
+                                {/* Row 1: First Name & Last Name */}
+                                <Grid container item spacing={3}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            required
-                                            name="firstName"
                                             label="First Name *"
-                                            placeholder="First Name"
-                                            fullWidth
+                                            name="firstName"
                                             value={form.firstName}
                                             onChange={handleChange}
-                                            error={!!errors.firstName}
-                                            helperText={errors.firstName}
-                                            autoComplete="given-name"
+                                            required
+                                            fullWidth
                                             variant="outlined"
                                             size="medium"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
+                                            autoComplete="given-name"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
                                                 }
                                             }}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            required
-                                            name="lastName"
                                             label="Last Name *"
-                                            placeholder="Last Name"
-                                            fullWidth
+                                            name="lastName"
                                             value={form.lastName}
                                             onChange={handleChange}
-                                            error={!!errors.lastName}
-                                            helperText={errors.lastName}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
                                             autoComplete="family-name"
-                                            variant="outlined"
-                                            size="medium"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
                                                 }
                                             }}
                                         />
                                     </Grid>
-                                    {/* Row 2: Address */}
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            required
-                                            name="address"
-                                            label="Address *"
-                                            placeholder="Address"
-                                            fullWidth
-                                            value={form.address}
-                                            onChange={handleChange}
-                                            error={!!errors.address}
-                                            helperText={errors.address}
-                                            autoComplete="street-address"
-                                            multiline
-                                            minRows={3}
-                                            variant="outlined"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    alignItems: 'flex-start'
-                                                }
-                                            }}
-                                        />
-                                    </Grid>
-                                    {/* Row 3: City, Province */}
+                                </Grid>
+
+                                {/* Row 2: Phone & Email */}
+                                <Grid container item spacing={3}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            required
-                                            name="city"
-                                            label="City *"
-                                            placeholder="City"
-                                            fullWidth
-                                            value={form.city}
+                                            label="Phone Number *"
+                                            name="phone"
+                                            value={form.phone}
                                             onChange={handleChange}
-                                            error={!!errors.city}
-                                            helperText={errors.city}
-                                            autoComplete="address-level2"
+                                            required
+                                            fullWidth
                                             variant="outlined"
                                             size="medium"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
+                                            autoComplete="tel"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
                                                 }
                                             }}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
+                                            label="Email *"
+                                            name="email"
+                                            type="email"
+                                            value={form.email}
+                                            onChange={handleChange}
                                             required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
+                                            autoComplete="email"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                {/* Row 3: Province & District */}
+                                <Grid container item spacing={3}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
                                             select
+                                            label="Province *"
                                             name="province"
-                                            label="State/Province/Region *"
-                                            placeholder="Province"
-                                            fullWidth
                                             value={form.province}
                                             onChange={handleChange}
-                                            error={!!errors.province}
-                                            helperText={errors.province}
-                                            autoComplete="address-level1"
+                                            required
+                                            fullWidth
                                             variant="outlined"
                                             size="medium"
-                                            SelectProps={{
-                                                MenuProps: {
-                                                    PaperProps: {
-                                                        style: { maxHeight: 250 }
-                                                    }
-                                                }
-                                            }}
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
+                                            autoComplete="address-level1"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
                                                 }
                                             }}
                                         >
-                                            {provincesOfNepal.map((prov) => (
-                                                <MenuItem key={prov} value={prov}>
-                                                    {prov}
+                                            <MenuItem value="">Select Province</MenuItem>
+                                            {provinces.map((p) => (
+                                                <MenuItem key={p} value={p}>
+                                                    {p}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    {/* Row 4: Zip, Phone */}
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            required
-                                            name="zip"
-                                            label="Zip / Postal code *"
-                                            placeholder="Zip / Postal code"
-                                            fullWidth
-                                            value={form.zip}
+                                            select
+                                            label="District *"
+                                            name="district"
+                                            value={form.district}
                                             onChange={handleChange}
-                                            error={!!errors.zip}
-                                            helperText={errors.zip}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
+                                            autoComplete="address-level2"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
+                                                }
+                                            }}
+                                            disabled={!form.province}
+                                        >
+                                            <MenuItem value="">Select District</MenuItem>
+                                            {currentDistricts.map((d) => (
+                                                <MenuItem key={d} value={d}>
+                                                    {d}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                </Grid>
+
+                                {/* Row 4: Municipality & Ward */}
+                                <Grid container item spacing={3}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="Municipality *"
+                                            name="municipality"
+                                            value={form.municipality}
+                                            onChange={handleChange}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="Ward Number *"
+                                            name="wardNo"
+                                            type="number"
+                                            value={form.wardNo}
+                                            onChange={handleChange}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
+                                                },
+                                                inputProps: { min: 1, max: 35 }
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                {/* Row 5: Tole & Postal Code */}
+                                <Grid container item spacing={3}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="Tole / Street *"
+                                            name="tole"
+                                            value={form.tole}
+                                            onChange={handleChange}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
+                                            autoComplete="street-address"
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label="Postal Code *"
+                                            name="postalCode"
+                                            value={form.postalCode}
+                                            onChange={handleChange}
+                                            required
+                                            fullWidth
+                                            variant="outlined"
+                                            size="medium"
                                             autoComplete="postal-code"
-                                            variant="outlined"
-                                            size="medium"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
+                                            InputProps={{
+                                                sx: {
+                                                    borderRadius: 1,
+                                                    backgroundColor: "#f9f9f9"
                                                 }
                                             }}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            required
-                                            name="phone"
-                                            label="Phone Number *"
-                                            placeholder="Phone Number"
-                                            fullWidth
-                                            value={form.phone}
-                                            onChange={handleChange}
-                                            error={!!errors.phone}
-                                            helperText={errors.phone}
-                                            autoComplete="tel"
-                                            type="tel"
-                                            variant="outlined"
-                                            size="medium"
-                                            sx={{
-                                                '& .MuiInputBase-root': {
-                                                    borderRadius: 2,
-                                                    bgcolor: '#f9fafb',
-                                                    height: 56
-                                                }
-                                            }}
-                                        />
-                                    </Grid>
-                                    {/* Submit Button */}
-                                    <Grid item xs={12}>
+                                </Grid>
+
+                                {/* Submit Button */}
+                                <Grid item xs={12}>
+                                    <Box sx={{
+                                        mt: 3,
+                                        display: "flex",
+                                        justifyContent: "center"
+                                    }}>
                                         <Button
                                             type="submit"
                                             variant="contained"
                                             size="large"
-                                            fullWidth
                                             sx={{
-                                                mt: 2,
+                                                px: 8,
+                                                py: 1.8,
                                                 fontWeight: 600,
-                                                fontSize: '1.1rem',
-                                                borderRadius: 2,
-                                                bgcolor: "#a000ff",
-                                                color: '#fff',
-                                                boxShadow: 2,
-                                                letterSpacing: 1,
-                                                px: 5,
-                                                minHeight: 48,
-                                                '&:hover': {
-                                                    bgcolor: "#7a00cc",
-                                                    transform: 'scale(1.03)',
-                                                    boxShadow: 4,
-                                                }
+                                                fontSize: "1.1rem",
+                                                borderRadius: 1,
+                                                textTransform: "none",
+                                                letterSpacing: 0.5,
+                                                boxShadow: "0px 5px 15px rgba(76, 76, 219, 0.2)",
+                                                "&:hover": {
+                                                    boxShadow: "0px 8px 20px rgba(76, 76, 219, 0.3)",
+                                                },
+                                                transition: "all 0.3s ease"
                                             }}
                                         >
-                                            DELIVER HERE
+                                            Save Address
                                         </Button>
-                                    </Grid>
+                                    </Box>
                                 </Grid>
-                            </form>
-                        </CardContent>
-                    </Card>
+                            </Grid>
+                        </form>
+                    </Paper>
+                </Grid>
+
+                {/* Address Card Column (40%) */}
+                <Grid item xs={12} md={5}>
+                    <Paper
+                        sx={{
+                            height: "100%",
+                            p: { xs: 3, sm: 4 },
+                            borderRadius: 2,
+                            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.06)",
+                            border: "1px solid #e0e0e0",
+                            display: "flex",
+                            flexDirection: "column"
+                        }}
+                    >
+                        <Typography
+                            variant="h5"
+                            fontWeight={600}
+                            color="text.primary"
+                            gutterBottom
+                            sx={{
+                                mb: 4,
+                                pb: 2,
+                                borderBottom: "1px solid #f0f0f0"
+                            }}
+                        >
+                            Address Preview
+                        </Typography>
+
+                        <Box sx={{
+                            flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            minHeight: 400
+                        }}>
+                            <AddressCard
+                                address={{
+                                    name: `${form.firstName} ${form.lastName}`,
+                                    phone: form.phone,
+                                    email: form.email,
+                                    tole: form.tole,
+                                    municipality: form.municipality,
+                                    wardNo: form.wardNo,
+                                    district: form.district,
+                                    province: form.province,
+                                    postalCode: form.postalCode
+                                }}
+                            />
+                        </Box>
+
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                                mt: 3,
+                                textAlign: "center",
+                                fontStyle: "italic"
+                            }}
+                        >
+                            Address preview updates as you fill the form
+                        </Typography>
+                    </Paper>
                 </Grid>
             </Grid>
-        </Box>
+        </Container>
     );
-}
+};
 
 export default DeliveryAddressForm;
